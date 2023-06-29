@@ -1,16 +1,17 @@
 #!/usr/bin/env bash
 #This scirpt displays the time for 12hrs and 59mins
 
+
 hr=0
 
-while [$hr -le 12]
+while [ $hr -le 12 ]
 do
-	echo "Hour: $hr"
-	min=1
-	while [$min -le 59]
-	do 
-		echo "$min"
-		((min++))
-	done
-	((hr++))
+    echo "Hour: $hr"
+    min=1
+    while [ $min -le 59 ]
+    do
+        echo "$min"
+	((min++))
+    done
+    ((hr++))
 done
