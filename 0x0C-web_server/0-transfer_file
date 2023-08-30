@@ -15,7 +15,7 @@ ssh_key_path=$4
 
 # disable strict host key checking
 
-scp -o "StricHostKeyChecking=no" -i "$ssh_key_path" "$file_path" "${username}@${ip_address}:~/"
+scp -o "StricHostKeyChecking=no" -i "$ssh_key_path" "$file_path" "${username}@${ip_address}":~/
 
 # check for success
 
