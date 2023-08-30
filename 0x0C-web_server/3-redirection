@@ -1,12 +1,25 @@
 #!/usr/bin/env bash
 # Configures an nginx server so that /redirect_me redirects to a new page
 
-sudo apt-get update
-sudo apt-get install -y nginx
-sudo ufw allow 'Nginx HTTP'
+sudo apt-get update && sudo apt-get install nginx -y
 
-echo "Hello World!" | sudo tee /var/www/html/index.html
-line="\\\trewrite ^/redirect_me https://github.com/adiomi90 permanent;"
-sudo sed -i "/listen 80 default_server;/a $line" /etc/nginx/sites-enabled/default
+sudo chown -R "$USER":"$USER" /var/www/html/index.html
+sudo chown -R "$USER":"$USER" /etc/nginx/sites-enabled/default
+
+echo "Hello World!" > /var/www/html/index.html
+
+redirection=\
+"server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+	root /var/www/html;
+	index index.html index.htm index.nginx-debian.html;
+	server_name _;
+	location /redirect_me {
+		return 301 https://github.com/adiomi90;
+	}
+}"
+
+echo -e "$redirection" > /etc/nginx/sites-enabled/default
 
 sudo service nginx restart
