@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-# Connect to the server without typing password
-SendEnv LANG LC_*
-HashKnownHosts yes
-GSSAPIAuthentication yes
-GSSAPIDelegateCredentials no
