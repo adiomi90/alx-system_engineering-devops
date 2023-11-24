@@ -1,7 +1,6 @@
-# install puppet-lint
+# This manifest is to install flask using pip
 
-package {'flask':
+package { 'flask':
   ensure   => '2.1.0',
-  name     => 'flask',
-  provider => 'pip'
+  provider => 'pip3'
 }
