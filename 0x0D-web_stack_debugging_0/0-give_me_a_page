@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# start the Apache web server on a Docker container
+#  based on holbertonschool/265-0 image
+echo "ServerName localhost" >> /etc/apache2.conf
+service apache2 start
