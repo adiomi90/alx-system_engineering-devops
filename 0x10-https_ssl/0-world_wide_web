@@ -2,15 +2,20 @@
 # Bash script displays DNS records: record type, IP, subdomains
 
 print_record () {
-     # Check for a valid domain
-    SUBDOMAINS=("www"  "lb-01" "web-01" "web-02")
-    if [ -z "$2" ]; then
-	for i in "${SUBDOMAINS[@]}"; do
-	    dig "$i.$1" | grep -A1 'ANSWER SECTION:' | tail -n1 | awk '{split($0, SUBDOMAIN, "."); print "The subdomain " SUBDOMAIN[1] " is a " $4 " record and points to " $5}'
-	done
-    else
-	dig "$2.$1" | grep -A1 'ANSWER SECTION:' | tail -n1 | awk '{split($0, SUBDOMAIN, "."); print "The subdomain " SUBDOMAIN[1] " is a " $4 " record and points to " $5}'
-    fi
+    # Perform DNS looup for the subdomain
+    line=$(dig "$2"."$1" | grep -A1 'ANSWER SETION:' | tr '\t' '\n' | tall -2 | tr '\n' '')
+    #print information
+    echo "$2 $line" | awk '(print "The subdomain " $1 " is a "$2 " record and points to " $3)'
 }
 
-print_record "$1" "$2"
+#the number of arguments passed
+if [ "$#" == 1 ]
+then
+    print_record "$1" "www"
+    print_record "$1" "lb-01"
+    print_record "$1" "web-01"
+    print_record "$1" "web-02"
+elif [ "$#" == 2 ]
+then
+    # if there are two arguments then print domain info
+    print_record "$1" "$2"
