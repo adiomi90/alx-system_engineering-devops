@@ -35,11 +35,11 @@ defaults
 
 frontend http
         bind *:80
-        bind *:443 ssl crt /etc/letsencrypt/live/www.adiomidev.tech/fullchain.pem
+        bind *:443 ssl crt /etc/letsencrypt/live/www.adiomidev.tech/adiomidev.pem
         default_backend webservers
 
 frontend www-https
-        bind *:443 ssl crt /etc/letsencrypt/live/www.adiomidev.tech/fullchain.pem
+        bind *:443 ssl crt /etc/letsencrypt/live/www.adiomidev.tech/adiomidev.pem
         http-request set-header X-Forwarded-Proto https
         default_backend webservers
 
