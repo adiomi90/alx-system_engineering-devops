@@ -1,10 +1,17 @@
 #1/usr/bin/env bash
-# configures an Nginx sever to listen on port 80
+# configures an Nginx sever to run as 'nginx' on port 8080
 
-# create a symblic link (-s option) between the Nginx configuration file
-# and the enabled sited directory
-ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
-# restart nginx
-service nginx start
-#terminate the first nginx process ID
-kill "$(pgrep 'nginx' | head -1)"
+# change user to 'nginx'
+sed -i "s/#user www-data/user nginx/" /etc/nginx/nginx.conf
+
+# change the default port from 80 to 8080 in avialabe site conf
+sed -i "s/80/8080/g" /etc/nginx/sites-available/default
+
+# restrictive permission onthe nginx file
+chmod 644 /etc/nignx/nginx.conf
+
+# terminate apache processes
+kill apache2
+
+# start nginx as user 'nginx'
+sudo -u nginx service nginx start
