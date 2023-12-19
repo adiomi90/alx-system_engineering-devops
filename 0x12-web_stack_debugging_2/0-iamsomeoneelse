@@ -1,9 +1,4 @@
 #!/usr/bin/env bash
-# Configures an Nginx server to liston on port 80
+# argument user passed as to whoami
 
-# remove the default Nginx configuration file
-rm /etc/nginx/sites-enabled/default
-# configure Nignexs to liston on port 80 for all active IPv4 IPs
-ln -s /etc/nginx/sites-avialable/default /etc/nginx/sites-enabled/default
-# restart nginx
-service nginx restart
+sudo -u "$1" whoami
