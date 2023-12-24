@@ -1,21 +1,19 @@
 #!/usr/bin/env bash
-# manages "manage_my_process"
-file=/var/run/my_process.pid
-proc=manage_my_process
-if [ "$1" = "start" ]; then
-	./"$proc" & 
-	echo "$!" > "$file"
-	echo "$proc" started
-elif [ "$1" = "stop" ]; then
-	pkill -SIGKILL -f ./"$proc"
-       	rm "$file"
-	echo "$proc" stopped
-elif [ "$1" = "restart" ]; then
-	pkill -SIGKILL -f ./"$proc"
-       	rm "$file"
-	./"$proc" &
-	echo "$!" > "$file"
-	echo "$proc" restarted
-else
-	echo "Usage: manage_my_process {start|stop|restart}"
-fi
+# A bash script that performs the following tasks:
+# Creates the file /var/run/myscript.pid containing its PID
+# Displays 'To infinity and beyond' indefinitely
+# Displays 'I hate the kill command' when receiving a SIGTERM signal
+# Displays 'Y U no love me?!' when receiving a SIGINT signal
+# Deletes the file /var/run/myscript.pid and terminates itself when
+# receiving a SIGQUIT or SIGTERM signal
+
+echo $$ >> /var/run/myscript.pid
+
+trap "echo 'I hate the kill command'; rm -rf /var/run/myscript.pid; exit" SIGTERM
+trap "echo 'Y U no love me?!'" SIGINT
+
+while true
+do 
+    echo 'To infinity and beyond' 
+    sleep 2
+done
