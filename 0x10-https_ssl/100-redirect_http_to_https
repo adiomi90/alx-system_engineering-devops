@@ -49,5 +49,5 @@ backend webservers
 
         balance roundrobin
         redirect scheme https if !{ ssl_fc }
-        server 290313-web-01 54.90.63.173:80 check
-        server 290313-web-02 52.91.134.31:80 check
+        server 290313-web-01 54.236.41.149:80 check
+        server 290313-web-02 34.207.154.174:80 check

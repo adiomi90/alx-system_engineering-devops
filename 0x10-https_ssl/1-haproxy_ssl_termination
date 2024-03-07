@@ -41,7 +41,7 @@ frontend adiomidev-frontend
         default_backend adiomidev-backend
 
 frontend adiomidev-frontend-https
-        bind *:443 ssl crt /etc/letsencrypt/live/www.adiomidev.tech.pem
+        bind *:443 ssl crt /etc/haproxy/certs/www.adiomidev.tech.pem
         http-request set-header X-Forwarded-Proto https
         default_backend adiomidev-backend
 
