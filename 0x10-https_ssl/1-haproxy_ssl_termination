@@ -32,20 +32,35 @@ defaults
         errorfile 502 /etc/haproxy/errors/502.http
         errorfile 503 /etc/haproxy/errors/503.http
         errorfile 504 /etc/haproxy/errors/504.http
+defaults
+        log     global
+        mode    http
+        option  httplog
+        option  dontlognull
+        timeout connect 5000
+        timeout client  50000
+        timeout server  50000
+        errorfile 400 /etc/haproxy/errors/400.http
+        errorfile 403 /etc/haproxy/errors/403.http
+        errorfile 408 /etc/haproxy/errors/408.http
+        errorfile 500 /etc/haproxy/errors/500.http
+        errorfile 502 /etc/haproxy/errors/502.http
+        errorfile 503 /etc/haproxy/errors/503.http
+        errorfile 504 /etc/haproxy/errors/504.http
 
 frontend adiomidev-frontend
         bind *:80
-	mode http
+        mode http
         http-request redirect scheme https code 301 unless { ssl_fc }
         http-request set-header X_Forwarded-Proto http
         default_backend adiomidev-backend
 
 frontend adiomidev-frontend-https
-        bind *:443 ssl crt /etc/letsencrypt/live/www.adiomidev.tech/privkey.pem
+        bind *:443 ssl crt /etc/haproxy/certs/www.adiomidev.tech.pem
         http-request set-header X-Forwarded-Proto https
         default_backend adiomidev-backend
 
 backend adiomidev-backend
         balance roundrobin
-        server 290313-web-01 54.236.41.149:80 check
-        server 290313-web-02 34.207.154.174:80 check
+        server 290313-web-01 52.7.173.165:80 check
+        server 290313-web-02 34.207.222.136:80 check
