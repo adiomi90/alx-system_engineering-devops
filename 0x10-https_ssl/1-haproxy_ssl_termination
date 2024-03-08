@@ -35,17 +35,10 @@ defaults
 
 frontend http
         bind *:80
-        bind *:443 ssl crt /etc/letsencrypt/live/www.adiomidev.tech/fullchain.pem
+        bind *:443 ssl crt /etc/letsencrypt/live/www.adiomidev.tech/adiomidev.pem
         default_backend webservers
-
-frontend www-https
-        bind *:443 ssl crt /etc/letsencrypt/live/www.adiomidev.tech/fullchain.pem
-        http-request set-header X-Forwarded-Proto https
-        default_backend webservers
-
-backend webservers
 
         balance roundrobin
-        redirect scheme https if !{ ssl_fc }
+        redirect scheme https code 301 if !{ ssl_fc }
         server 290313-web-01 54.236.41.149:80 check
         server 290313-web-02 34.207.154.174:80 check
