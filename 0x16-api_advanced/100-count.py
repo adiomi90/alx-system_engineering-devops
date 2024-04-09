@@ -1,20 +1,14 @@
 #!/usr/bin/python3
+"""A module that queries Reddit API and print sorted count of given keywords"""
 import requests
 
 
 def count_words(subreddit, word_list, after="", count=[]):
     """
-    Count the occurrences of words from a given word list in the titles of the hot posts of a subreddit.
-
-    Args:
-        subreddit (str): The name of the subreddit.
-        word_list (list): A list of words to count.
-        after (str, optional): A token used for pagination. Defaults to "".
-        count (list, optional): A list to store the count of each word. Defaults to [].
-
-    Returns:
-        None
+    queries the Reddit API, parses the title of all hot articles,
+    and prints a sorted count of given keywords
     """
+
     if after == "":
         count = [0] * len(word_list)
 
