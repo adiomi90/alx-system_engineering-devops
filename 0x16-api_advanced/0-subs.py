@@ -1,16 +1,12 @@
 #!/usr/bin/python3
+""" A module that returns the number of subscribers for a given subreddit """
 from requests import get
 
 
 def number_of_subscribers(subreddit):
     """
-    Retrieves the number of subscribers for a given subreddit.
-
-    Args:
-        subreddit (str): The name of the subreddit.
-
-    Returns:
-        int: The number of subscribers for the subreddit. Returns 0 if the subreddit is not provided or is not a string.
+    queries the Reddit API and returns the number of subscribers
+    (not active users, total subscribers) for a given subreddit.
     """
 
     if not subreddit or not isinstance(subreddit, str):
