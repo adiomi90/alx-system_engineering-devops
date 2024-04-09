@@ -1,23 +1,21 @@
 #!/usr/bin/python3
-""" A module that returns a list of titles of hot articles for a subreddit """
 import requests
-import json
 
 after = None
 
 
 def recurse(subreddit, hot_list=[]):
     """
-    Queries the Reddit API and returns the top ten post titles recursively.
+    Recursively retrieves the titles of the hot posts from a given subreddit.
 
     Args:
-        subreddit (str): The name of the subreddit to query.
-        hot_list (list): A list to store the top post titles. Defaults to an empty list.
+        subreddit (str): The name of the subreddit.
+        hot_list (list): A list to store the titles of the hot posts (default=[]).
 
     Returns:
-        list: A list of the top ten post titles from the subreddit.
-
+        list: A list of titles of the hot posts from the subreddit, or None if the request fails.
     """
+
     global after
     user_agent = {'User-Agent': 'dtik'}
     url = f'https://www.reddit.com/r/{subreddit}/hot.json'
