@@ -1,43 +1,29 @@
-import praw
+#!/usr/bin/python3
+""" A module that returns a list of titles of hot articles for a subreddit """
+import requests
 
-# Initialize the Reddit API
-reddit = praw.Reddit(client_id='YOUR_CLIENT_ID',
-                     client_secret='YOUR_CLIENT_SECRET',
-                     user_agent='YOUR_USER_AGENT')
+after = None
 
-def count_words(subreddit, word_list, posts=None, counts=None):
-    if posts is None:
-        try:
-            # Fetch hot articles from the specified subreddit
-            posts = reddit.subreddit(subreddit).hot(limit=100)
-        except Exception as e:
-            print(f"An error occurred: {e}")
-            return
 
-    if counts is None:
-        counts = {}
+def recurse(subreddit, hot_list=[]):
+    """
+    queries the Reddit API and returns top ten post titles recursively
+    """
+    global after
+    user_agent = {'User-Agent': 'dtik'}
+    url = f'https://www.reddit.com/r/{subreddit}/hot.json'
+    params = {'after': after}
+    response = requests.get(url, params=params, headers=user_agent,
+                            allow_redirects=False)
 
-    try:
-        post = next(posts)
-    except StopIteration:
-        # No more posts to process
-        sorted_counts = sorted(counts.items(), key=lambda x: (-x[1], x[0]))
-        for word, count in sorted_counts:
-            print(f"{word.lower()}: {count}")
-        return
-
-    # Recursive call to process the next post
-    count_words(subreddit, word_list, posts, update_counts(post, word_list, counts))
-
-def update_counts(post, word_list, counts):
-    title = post.title.lower()
-    for word in word_list:
-        if word.lower() in title:
-            if word.lower() in counts:
-                counts[word.lower()] += title.count(word.lower())
-            else:
-                counts[word.lower()] = title.count(word.lower())
-    return counts
-
-# Example usage:
-count_words("python", ["python", "javascript", "java"])
+    if response.status_code == 200:
+        result = response.json().get("data").get("after")
+        if not result:
+            after = result
+            recurse(subreddit, hot_list)
+        all_titles = response.json().get("data").get("children")
+        for title in all_titles:
+            hot_list.append(title.get("data").get("title"))
+        return hot_list
+    else:
+        return (None)
