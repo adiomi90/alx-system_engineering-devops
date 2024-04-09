@@ -1,36 +1,28 @@
-#!/usr/bin/python3
-import requests
+import praw
 
-after = None
+# Initialize the Reddit API
+reddit = praw.Reddit(client_id='YOUR_CLIENT_ID',
+                     client_secret='YOUR_CLIENT_SECRET',
+                     user_agent='YOUR_USER_AGENT')
 
-
-def recurse(subreddit, hot_list=[]):
-    """
-    Recursively retrieves the titles of the hot posts from a given subreddit.
-
-    Args:
-        subreddit (str): The name of the subreddit.
-        hot_list (list): A list to store the titles of the hot posts (default=[]).
-
-    Returns:
-        list: A list of titles of the hot posts from the subreddit, or None if the request fails.
-    """
-
-    global after
-    user_agent = {'User-Agent': 'dtik'}
-    url = f'https://www.reddit.com/r/{subreddit}/hot.json'
-    params = {'after': after}
-    response = requests.get(url, params=params, headers=user_agent,
-                            allow_redirects=False)
-
-    if response.status_code == 200:
-        result = response.json().get("data").get("after")
-        if not result:
-            after = result
-            recurse(subreddit, hot_list)
-        all_titles = response.json().get("data").get("children")
-        for title in all_titles:
-            hot_list.append(title.get("data").get("title"))
-        return hot_list
-    else:
+def recurse(subreddit, hot_list=None):
+    if hot_list is None:
+        hot_list = []
+    try:
+        # Fetch hot articles from the specified subreddit
+        subreddit_obj = reddit.subreddit(subreddit)
+        hot_posts = subreddit_obj.hot(limit=100)
+        # Recursively fetch titles from next pages
+        hot_list.extend([post.title for post in hot_posts])
+        return recurse(subreddit, hot_list)
+    except Exception as e:
+        # If the subreddit is invalid or no results found, return None
+        print(f"An error occurred: {e}")
         return None
+
+# Example usage:
+# result = recurse("programming")
+# if result is not None:
+#     print(len(result))
+# else:
+#     print("None")
