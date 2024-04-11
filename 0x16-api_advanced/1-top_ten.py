@@ -4,11 +4,12 @@ A Function that queries the Reddit API and prints
 the top ten hot posts of a subreddit
 """
 import requests
+import sys
 
 
 def top_ten(subreddit):
     """ Queries to Reddit API """
-    u_agent = 'Mozilla/5.0'
+    u_agent = ''
 
     headers = {
         'User-Agent': u_agent
@@ -33,4 +34,3 @@ def top_ten(subreddit):
     else:
         for post in hot_posts:
             print(post['data']['title'])
-
