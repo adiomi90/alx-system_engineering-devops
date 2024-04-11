@@ -1,31 +1,35 @@
 #!/usr/bin/python3
-""" A module that prints titles of first 10 hot posts for a given subreddit """
-
-from requests import get
+"""
+A Function that queries the Reddit API and prints
+the top ten hot posts of a subreddit
+"""
+import requests
 
 
 def top_ten(subreddit):
-    """
-    queries the Reddit API and prints the titles of the first
-    10 hot posts listed for a given subreddit
-    """
+    """ Queries to Reddit API """
+    u_agent = 'Mozilla/5.0'
 
-    if not subreddit or not isinstance(subreddit, str):
-        print("None")
+    headers = {
+        'User-Agent': u_agent
+    }
 
-    user_agent = {'User-agent': 'dtik'}
-    params = {'limit': 10}
-    url = f'https://www.reddit.com/r/{subreddit}/hot.json'
+    params = {
+        'limit': 10
+    }
 
-    response = get(url, headers=user_agent, params=params,
-                   allow_redirects=False)
-    results = response.json()
-
-    try:
-        data_set = results.get('data').get('children')
-
-        for d in data_set:
-            print(d.get('data').get('title'))
-
-    except Exception:
-        print("None")
+    url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
+    res = requests.get(url,
+                       headers=headers,
+                       params=params,
+                       allow_redirects=False)
+    if res.status_code != 200:
+        print(None)
+        return
+    dic = res.json()
+    hot_posts = dic['data']['children']
+    if len(hot_posts) == 0:
+        print(None)
+    else:
+        for post in hot_posts:
+            print(post['data']['title'])
