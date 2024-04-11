@@ -8,19 +8,16 @@ import requests
 
 def number_of_subscribers(subreddit):
     """ Queries to Reddit API """
-    u_agent = 'Mozilla/5.0'
+    if not subreddit or not isinstance(subreddit, str):
+        return 0
 
-    headers = {
-        'User-Agent': u_agent
-    }
+    user_agent = {'User-agent': 'Google Chrome  Version 123.0.6312.122'}
+    url = f'https://www.reddit.com/r/{subreddit}/about.json'
+    response = get(url, headers=user_agent, allow_redirects=False)
+    results = response.json()
 
-    url = "https://www.reddit.com/r/{}/about.json".format(subreddit)
-    res = requests.get(url, headers=headers, allow_redirects=False)
-    if res.status_code != 200:
+    try:
+        return results.get('data').get('subscribers')
+
+    except Exception:
         return 0
-    dic = res.json()
-    if 'data' not in dic:
-        return 0
-    if 'subscribers' not in dic.get('data'):
-        return 0
-    return res.json()['data']['subscribers']
