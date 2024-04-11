@@ -21,7 +21,7 @@ def number_of_subscribers(subreddit):
     if not subreddit or not isinstance(subreddit, str):
         return 0
 
-    user_agent = {'User-agent': 'Google Chrome  Version 123.0.6312.122'}
+    user_agent = {'User-agent': 'My-User-Agent'}
     url = f'https://www.reddit.com/r/{subreddit}/about.json'
     response = requests.get(url, headers=user_agent, allow_redirects=False)
     results = response.json()

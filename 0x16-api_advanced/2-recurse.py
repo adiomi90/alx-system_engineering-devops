@@ -10,7 +10,7 @@ def recurse(subreddit, hot_list=[]):
     queries the Reddit API and returns top ten post titles recursively
     """
     global after
-    user_agent = {'User-Agent': 'dtik'}
+    user_agent = {'User-Agent': 'My-User-Agent'}
     url = f'https://www.reddit.com/r/{subreddit}/hot.json'
     params = {'after': after}
     response = requests.get(url, params=params, headers=user_agent,
